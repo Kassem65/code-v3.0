@@ -154,6 +154,7 @@ Route::group(['prefix' => 'student' , 'middleware' => ['auth:sanctum','student']
         Route::post('{contest}/solve/{problem}' , [ContestController::class , 'solve']);
         Route::post('join/{contest}' , [ContestController::class , 'join']);
         
+        
         Route::get('/{contest}' , [ContestController::class , 'show']) ;
     });
     Route::group(['prefix' => 'categories'] , function(){
