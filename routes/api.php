@@ -52,7 +52,6 @@ Route::group(['prefix' => 'adminstrator' , 'middleware' => ['auth:sanctum','admi
     Route::get('teachers', [TeacherController::class, 'index']);
     Route::post('teachers/add', [TeacherController::class, 'addTeacher']);
     Route::delete('teacher/{teacher}', [TeacherController::class, 'deleteTeacher']);
-    
     Route::post('change/{changeCategoryRequest}', [RequestController::class, 'accept']);
     Route::get('categories-with-subjects', [AdminstratorCategoryController::class, 'categoriesWithSubjects']);
     Route::get('exams', [AdminstratorExamController::class, 'index']);
@@ -67,6 +66,7 @@ Route::group(['prefix' => 'adminstrator' , 'middleware' => ['auth:sanctum','admi
         Route::post('distribute' , [AdminStudentController::class , 'distributeCategories']);
     });
 
+    Route::get('bank-problems', [ProblemController::class, 'showAdminBank']);
     Route::post('problems/add-problem' , [ProblemController::class, 'storeAdmin']);
 });
 Route::group(['prefix' => 'teacher' , 'middleware' => ['auth:sanctum','teacher']] , function(){
@@ -174,6 +174,7 @@ Route::group(['prefix' => 'student' , 'middleware' => ['auth:sanctum','student']
         Route::get('/', [StudentExamController::class, 'index']);
         Route::get('/{exam}', [StudentExamController::class, 'show']);
         Route::get('/{exam}/show-solve', [StudentExamController::class, 'showStudentExamSolve']);
+        Route::post('/{exam}/join', [StudentExamController::class, 'joinExam']);
         Route::post('{exam}/solve', [StudentExamController::class, 'solve']);
         Route::post('{exam}/submit', [StudentExamController::class, 'submit']);
     });

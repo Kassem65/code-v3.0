@@ -7,6 +7,8 @@ use App\Http\Resources\ExamsSubjectsResource;
 use App\Models\Exam;
 use App\Models\ExamStudent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Termwind\Components\Raw;
 
 class ExamController extends Controller
 {
@@ -23,6 +25,9 @@ class ExamController extends Controller
             return response()->json([
                 'error' => 'you can t access this exam. you are not belong to this subject'
             ]);
+        }
+        if (!ExamStudent::where('student_id', $studentId)->where('exam_id', $exam->id)->where('check', '>=', 1)->exists()) {
+            abort(403, 'you are not joined yet. please enter the password '. $exam->passwd);
         }
         if ($exam->time > now()){
             return response()->json([
@@ -108,5 +113,41 @@ class ExamController extends Controller
         $result = $precent *  $markOfProblem / 100;
         $exam->students()->updateExistingPivot($studentId , ['mark' => $precent*$markOfProblem]);  
         return ['message' => "you get $result from 5 and you can resubmit the solve \n but note , once you subimt you will lose the old solve and mark "];
+    }
+    
+    public function joinExam(Request $request, Exam $exam) {
+        $request->validate([
+            'password' => 'required'
+        ]);
+        $studentId = auth()->user()->student->id;
+
+        // Check if the student is enrolled in the subject related to the exam
+        $isEnrolled = $exam->students->contains($studentId);
+
+        if ($isEnrolled) {
+            $check = ExamStudent::where('student_id', $studentId)
+                ->where('exam_id', $exam->id)
+                ->first()->check;
+            if ($check >= 1) {
+                abort(403, 'you registered before');
+            }
+            // The student is enrolled in the subject, you can proceed with password check
+            $enteredPassword = $request->input('password');
+            if ($exam->passwd == $enteredPassword) {
+
+                $exam->students()->updateExistingPivot($studentId, ['check' => DB::raw('`check` + 1')]);
+                return response()->json([
+                    'message' => 'you registered in the exam successfully.'
+                ]);
+            } else {
+                return response()->json([
+                    'error' => 'the password incorrect.'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'error' => 'you are not in this subject.'
+            ]);
+        }
     }
 }

@@ -21,6 +21,10 @@ class ProblemController extends Controller
         $problems = auth()->user()->teacher->problems()->where('active', 0)->get() ;
         return ProblemResource::collection($problems);
     }
+    public function showAdminBank(){
+        $problems = auth()->user()->adminstrator->problems()->where('active', 0)->get() ;
+        return ProblemResource::collection($problems);
+    }
     public function myProblems() {
         $teacher = auth()->user()->teacher;
         $problems = $teacher->problems();
