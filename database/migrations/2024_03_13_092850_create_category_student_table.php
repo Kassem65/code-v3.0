@@ -11,11 +11,6 @@ class CreateCategoryStudentTable extends Migration
             $table->id();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('student_id')->constrained()->onDelete('cascade');
-            $table->integer('mark')->nullable();
-            $table->float('attendance_marks')->nullable();
-            $table->float('assessment_marks')->nullable();
-            $table->integer('presence')->default(0);
-            $table->integer('number_of_assessment')->nullable();
             $table->timestamps();
         });
     }

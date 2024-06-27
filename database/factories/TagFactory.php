@@ -16,8 +16,12 @@ class TagFactory extends Factory
      */
     public function definition(): array
     {
+        $tags = ['binary search', 'dynamic programming', 'implementation', 
+            'sorting', 'math', 'number theory', 'geometry', 'graph', 'trees',
+            'greedy', 'brute force', 'bitmasks', 'two pointers', 'hashing'
+        ];
         return [
-            'name' => $this->faker->word,
+            'name' => $this->faker->randomElement($tags),
         ];
     }
 }

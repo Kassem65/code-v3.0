@@ -20,9 +20,7 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word . '_' . random_int(1,10),
-            'number_of_lessons' => $this->faker->numberBetween(1, 20),
-            'number_of_ratings' => $this->faker->numberBetween(1, 100),
+        'name' => $this->faker->word . '_' . random_int(1,10),
             'mark_of_commings' => $this->faker->randomFloat(2, 0, 10),
             'mark_of_ratings' => $this->faker->randomFloat(2, 0, 10),
             'subject_id' => Subject::inRandomOrder()->value('id'),

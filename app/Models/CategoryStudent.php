@@ -12,11 +12,6 @@ class CategoryStudent extends Model
     protected $fillable = [
         'category_id' ,
         'student_id',
-        'attendance_marks',
-        'assessment_marks',
-        'number_of_assessment',
-        'presence',
-        'mark',
     ] ;
     
 

@@ -13,7 +13,6 @@ class CreateExamStudentTable extends Migration
             $table->foreignId('exam_id')->constrained()->onDelete('cascade');
             $table->integer('mark')->default(0);
             $table->string('code1')->nullable();
-            $table->string('code2')->nullable();
             $table->timestamps();
         });
     }

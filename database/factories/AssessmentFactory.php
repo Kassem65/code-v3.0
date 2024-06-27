@@ -19,11 +19,12 @@ class AssessmentFactory extends Factory
      */
     public function definition(): array
     {
+        $Category = Category::inRandomOrder()->first() ;
         return [
-            'category_id'=>Category::inRandomOrder()->value('id'),
-            'teacher_id'=>Teacher::inRandomOrder()->value('id'),
+            'name' => 'assessment' . rand(0,10),
+            'category_id'=>$Category->id,
+            'teacher_id'=>$Category->teacher->id,
             'problem_id'=>Problem::inRandomOrder()->value('id'),
-            
         ];
     }
 }

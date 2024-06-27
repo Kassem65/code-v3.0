@@ -9,7 +9,7 @@ class ExamStudent extends Model
 {
     use HasFactory;
     protected $table = 'exam_student';
-    protected $hidden = ['code2' , 'created_at' , 'updated_at'];
+    protected $hidden = [ 'created_at' , 'updated_at'];
     
     public function answers()
     {

@@ -12,7 +12,6 @@ class Category extends Model
         'name',
         'subject_id',
         'teacher_id',
-        'number_of_lessons',
         'mark_of_commings',
         'mark_of_ratings',
         ] ;

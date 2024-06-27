@@ -15,57 +15,65 @@ class ProblemFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
-
-    {
-        $p = [] ;
-        $p[] = [ 
-        "code" => "#include<iostream>
+    public function definition(): array {
+    $problems = [
+        [
+            "name" => 'array sum',
+            "code" => "#include<iostream>
                 using namespace std ;
                 int main(){
-                    int x ; int y ;
-                    cin>>x >> y ;
-                    cout << x + y;
-                    return 0 ;
-                }",
-        "name" => 'add tow number' ,
-    ];
-    $p[] = [ 
-        "code" => "#include<iostream>
-                using namespace std ;
-                int main(){
-                    int x ;  ;
+                    int x ;  
                     cin>>x ;
                     int sum = 0 ;
                     for (int i = 0 ; i< x ; i++){int k ; cin >> k ; sum+=k;}
                     cout << sum ;
                     return 0 ;
                 }",
-        "name" => 'array sum' ,
-    ];
-    $p[] = [
-        "code" => "#include<iostream>
+            'description' => 'Given an array of integers nums and an integer target, return the sum of elements.
+
+            You can return the answer in any order.'
+        ],
+        [
+            "name" => 'max number',
+            "code" => "#include<iostream>
                 using namespace std ;
                 int main(){
-                    int x ;  ;
+                    int x ;  
                     cin>>x ;
-                    int a[x] ;
-                    for (int i = 0 ; i< x ; i++){cin >> a[i]}
-                    max = a[0] ;
-                    for (int i = 0 ; i< x ; i++){
-                        if (a[i] > max ) max = a[i] ;
-                    }
+                    int max = 0 ;
+                    for (int i = 0 ; i< x ; i++) {
+                    int k ; cin >> k;
+                    if (k > max)
+                        max = k;
+                }
                     cout << max;
-                    return 0 ;
+                    return 0;
                 }",
-        "name" => 'max val' ,
+            'description' => 'Given an array of integers nums and an integer target, return the max number of elements.
+
+            You can return the answer in any order.'
+        ],
+        [
+            "name" => 'sort the array',
+            "code" => "#include<iostream>
+                using namespace std ;
+                int main(){
+                    int x ;  
+                    cin>>x ;
+                    int a[x];
+                    for (int i = 0 ; i< x ; i++) cin >> a[i];
+                    sort(a, a+x);
+                    for (int i = 0 ; i< x ; i++) cout << a[i];
+                    return 0;
+                }",
+            'description' => 'Given an array of integers nums and an integer target, sort the array in ascending order.'
+        ],
     ];
-    
     $rand = random_int(0,2);
         return [
-            'name' => $p[$rand]['name'],
+            'name' => $problems[$rand]['name'],
             'description' => $this->faker->paragraph,
-            'teacher_code_solve' => $p[$rand]['code'] ,
+            'teacher_code_solve' => $problems[$rand]['code'],
             'teacher_id' => Teacher::inRandomOrder()->value('id'),
             'level' => $rand ,
             'time_limit_ms' => 1

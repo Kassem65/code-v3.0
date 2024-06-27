@@ -22,7 +22,6 @@ class ExamStudentFactory extends Factory
             'student_id' => Student::inRandomOrder()->value('id'),
             'exam_id' => Exam::inRandomOrder()->value('id'),
             'code1' => $this->faker->text,
-            'code2' => $this->faker->text,
         ];
     }
 }

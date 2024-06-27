@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Category;
 use App\Models\Student;
+use App\Models\StudentSubject;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,13 +19,15 @@ class CategoryStudentFactory extends Factory
      */
     public function definition(): array
     {
+        $category = Category::inRandomOrder()->first();
+        $student = Student::inRandomOrder()->first();
+        StudentSubject::create([
+            'subject_id' => $category->subject->id ,
+            'student_id' => $student->id ,
+        ]);
         return [
-            'category_id' => Category::inRandomOrder()->value('id'),
-            'student_id' => Student::inRandomOrder()->value('id'),
-            'mark' => $this->faker->numberBetween(1, 10),
-            'attendance_marks' => $this->faker->randomFloat(2, 0, 10),
-            'assessment_marks' => $this->faker->randomFloat(2, 0, 10),
-            'number_of_assessment' => $this->faker->numberBetween(1, 5),
+            'category_id' => $category->id,
+            'student_id' => $student->id ,
         ];
     }
 }
