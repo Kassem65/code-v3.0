@@ -66,6 +66,8 @@ Route::group(['prefix' => 'adminstrator' , 'middleware' => ['auth:sanctum','admi
     Route::group(['prefix' => 'students'] , function(){
         Route::post('distribute' , [AdminStudentController::class , 'distributeCategories']);
     });
+
+    Route::post('problems/add-problem' , [ProblemController::class, 'storeAdmin']);
 });
 Route::group(['prefix' => 'teacher' , 'middleware' => ['auth:sanctum','teacher']] , function(){
     Route::post('login' , [TeacherAuthController::class , 'login']);
@@ -154,7 +156,7 @@ Route::group(['prefix' => 'student' , 'middleware' => ['auth:sanctum','student']
         Route::post('{contest}/solve/{problem}' , [ContestController::class , 'solve']);
         Route::post('join/{contest}' , [ContestController::class , 'join']);
         
-        
+
         Route::get('/{contest}' , [ContestController::class , 'show']) ;
     });
     Route::group(['prefix' => 'categories'] , function(){

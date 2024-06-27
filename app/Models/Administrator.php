@@ -22,4 +22,8 @@ class Administrator extends Model
     {
         return $this->hasMany(Exam::class);
     }
+    public function problems(): HasMany
+    {
+        return $this->hasMany(Problem::class);
+    }
 }

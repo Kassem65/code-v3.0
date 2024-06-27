@@ -28,6 +28,51 @@ class ProblemController extends Controller
             'data' => $problems
         ], 200);
     }
+    public function storeAdmin(Request $request) {
+        $admin = auth()->user()->adminstrator;
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'teacher_code_solve' => 'required',
+            'language' => 'required|integer',
+            'test_cases' => 'required|array',
+            'tags' => 'required|array',
+        ]);
+        DB::beginTransaction();
+        $problem = $admin->problem->create($request->all());
+        foreach ($request->tags as $tag) 
+            $problem->tags()->attach($tag);
+
+        $maxTim = 0;
+        foreach($request->test_cases as $test_case) {
+            $input = $test_case;
+            if ($request->language == 1){
+                $output = CodeExecutorController::runCppCode([
+                    'code' => $request->teacher_code_solve,
+                    'input' => $test_case,
+                ]);
+            }
+            else{
+                $output = CodeExecutorController::runJavaCode([
+                    'code' => $request->teacher_code_solve,
+                    'input' => $test_case,
+                ]);
+            }
+    
+            if ($output['time'] > $maxTim)$maxTim = $output['time'] ;
+            $problem->testCases()->create([
+                'input'=>$input ,
+                'output' => $output['output'],
+            ]);
+        }
+        //add the time of the problem and we can make it integer to present seconds . 
+        $problem->time_limit_ms = $maxTim + 0.2 ;
+        $problem->save();
+        DB::commit();
+        $problem->testCases ;
+        $problem['code']= $problem->teacher_code_solve ;    
+        return $problem;
+    }
     public function store(Request $request) {
         $teacher = auth()->user()->teacher;
         $request->validate([

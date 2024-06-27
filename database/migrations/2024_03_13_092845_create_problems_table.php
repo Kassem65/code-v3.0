@@ -21,7 +21,8 @@ class CreateProblemsTable extends Migration
             $table->text('hint1')->nullable();
             $table->text('hint2')->nullable();
             $table->boolean('in_bank')->default(1);
-            $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade');
+            $table->foreignId('teacher_id')->nullable()->constrained('teachers')->onDelete('cascade');
+            $table->foreignId('administrator_id')->nullable()->constrained('administrators')->onDelete('cascade');
             $table->timestamps();
         });
     }
