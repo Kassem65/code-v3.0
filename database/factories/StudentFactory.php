@@ -17,6 +17,7 @@ class StudentFactory extends Factory
      */
     public function definition(): array
     {
+        
         return [
             'user_id' => User::factory()->create(['role'=>'student'])->id,
             'phone_number' => $this->faker->phoneNumber,

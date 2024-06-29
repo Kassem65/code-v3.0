@@ -10,6 +10,7 @@ use App\Models\Student;
 use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -43,8 +44,10 @@ class StudentController extends Controller
         $request->validate([
             'file' => 'required'
         ]);
+
         $file = $request->file('file');
         $rows = Excel::toCollection([] , $file)[0];
+        DB::beginTransaction();
         foreach($rows as $row){
             if ($row[0] == 'number')continue ;
             SetOfStudent::create([
@@ -52,6 +55,9 @@ class StudentController extends Controller
                 'name' =>  $row[1]
             ]);
         }
+        DB::commit();
+        return ['message' => 'studnts added successfully']; 
+        
     }
         public function distributeCategories(Request $request){
         $request->validate([

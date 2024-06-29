@@ -74,9 +74,10 @@ class ProblemFactory extends Factory
             'name' => $problems[$rand]['name'],
             'description' => $this->faker->paragraph,
             'teacher_code_solve' => $problems[$rand]['code'],
-            'teacher_id' => Teacher::inRandomOrder()->value('id'),
+            'teacher_id' => 1,
             'level' => $rand ,
-            'time_limit_ms' => 1
+            'time_limit_ms' => 1,
+            'in_bank' => rand(0,1)
         ];
     }
 }

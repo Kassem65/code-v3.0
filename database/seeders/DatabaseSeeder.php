@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -22,8 +23,8 @@ class DatabaseSeeder extends Seeder
             'role' => 'adminstrator'
         ]);
         
-        \App\Models\User::factory()->create();
-        \App\Models\Student::factory(10)->create();
+        // \App\Models\Student::factory(10)->create();
+        StudentSeeder::run();
         \App\Models\Teacher::factory(10)->create();
         \App\Models\Administrator::factory(10)->create();
         \App\Models\Tag::factory(10)->create();
