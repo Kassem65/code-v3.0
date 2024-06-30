@@ -27,7 +27,7 @@ class AuthController extends Controller
             abort(403, 'wrong password');
         $token = $user->createToken('personal_access_token')->plainTextToken;
         return response()->json([
-                'message' => 'welcome',
+                'role' => $user->role,
                 'token' => $token,
             ]);
         }
@@ -36,7 +36,7 @@ class AuthController extends Controller
             $user = auth()->user();
             $token = $user->createToken('Personal Token')->plainTextToken;
             return response()->json([
-                'message' => 'welcome',
+                'role' => $user->role,
                 'token' => $token
             ]);
         }

@@ -10,7 +10,7 @@ class ExamStudent extends Model
     use HasFactory;
     protected $table = 'exam_student';
     protected $fillable = [
-        'check'
+        'check', 'student_id', 'exam_id'
     ];
     protected $hidden = [ 'created_at' , 'updated_at'];
     

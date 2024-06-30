@@ -19,13 +19,29 @@ use Maatwebsite\Excel\Facades\Excel;
 class StudentController extends Controller
 {
     public function index() {
-        $data['students'] = Student::all();
+        $data['students'] = Student::with('user')->get()->map(function ($student) {
+            return [
+                'id' => $student->id,
+                'student_name' => $student->user->name,
+                'student_email' => $student->user->email,
+                'phone_number' => $student->phone_number,
+                "hint_count" => $student->hint_count,
+                "points" => $student->points,
+                "rate" => $student->rate,
+                "date_of_birth" => $student->date_of_birth,
+                "easy" => $student->easy,
+                "medium" => $student->medium,
+                "hard" => $student->hard,
+                "university_id" => $student->university_id,
+            ];
+        });
         $data['change_class_request'] = ChangeCategoryRequest::all()->map(function ($request) {
             return [
                 'id' => $request->id,
                 'student_name' => $request->student->user->name,
                 'old_class' => $request->old_category,
-                'new_class' => $request->new_category, 
+                'new_class' => $request->new_category,
+                'reason' => $request->reason
             ];
         });
         return $data;
@@ -74,13 +90,14 @@ class StudentController extends Controller
         ]);
     }
     private function distribute($request , $subjects , $rows){
+        $categories = [];
          for ($i = 1; $i <= $request->classes * count($subjects); $i++) {
             $subject_id = $subjects[(int)(($i-1)/$request->classes)] ;
             $subject = Subject::where('id' , $subject_id)->first();
             
             $categories [] = Category::create([
                 'subject_id' => $subject->id ,
-                'name' => $subject->name.'_'.$i ,
+                'name' => $subject->name.'_'. (($i-1) % count($subjects) + 1),
             ]);
         }
         foreach ($rows as $row){
@@ -90,11 +107,11 @@ class StudentController extends Controller
             $student = $user->student;
             foreach($categories as $category){
                 if ($category->name[strlen($category->name)-1] == $row[0]){
+
                     $student->categories()->attach($category->id);
                     // //add students to subjects also 
-                    // foreach($subjects as $subject){
-                    //     $student->subjects()->attach($subject) ;
-                    // }
+                    $subject = $category->subject;
+                    $student->subjects()->attach($subject->id);
                 }
             }
         }

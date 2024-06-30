@@ -57,7 +57,7 @@ class ExamController extends Controller
     public function solve(Request $request, Exam $exam){
         $studentId = auth()->user()->student->id;
         if (!$exam->students->contains($studentId)){
-            return ['message' => 'you can not solve this exam'];
+            return ['error' => 'you are not in this subject.'];
         }
         if ($exam->students()->where('student_id' , $studentId)->first()->pivot->mark != 0){
             return ['message'=> 'you already solve this exam'];
@@ -112,7 +112,10 @@ class ExamController extends Controller
         $markOfProblem = 5 ;
         $result = $precent *  $markOfProblem / 100;
         $exam->students()->updateExistingPivot($studentId , ['mark' => $precent*$markOfProblem]);  
-        return ['message' => "you get $result from 5 and you can resubmit the solve \n but note , once you subimt you will lose the old solve and mark "];
+        return [
+            'message' => "you get $result from 5 and you can resubmit the solve \n but note , once you subimt you will lose the old solve and mark ",
+            'mark' => $result
+        ];
     }
     
     public function joinExam(Request $request, Exam $exam) {

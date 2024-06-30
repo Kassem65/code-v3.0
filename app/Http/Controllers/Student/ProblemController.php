@@ -76,7 +76,10 @@ class ProblemController extends Controller
         
         return response()->json($response, 201);
     }
-    public function show(Problem $problem){
+    public static function show(Problem $problem){
+        // if ($problem->active == 0) {
+        //     abort(403, 'you cant access this problem');
+        // }
         $problem->testCase ;
         $problem->tags ;
         $solved = SolveProblem::where('student_id' , auth()->user()->student->id )
@@ -86,6 +89,7 @@ class ProblemController extends Controller
         if ($solved){
             $problem['status'] = 'accept' ;
         }else $problem['status'] = 'not yet' ;
+    
         return $problem ;
     }
     public static function solveProlem(Problem $problem , Request $request):array{
@@ -117,7 +121,7 @@ class ProblemController extends Controller
             if (array_key_exists('error' , $output)) {         
                 $output = $output['error'];
                 $time = 0 ;
-                $message = "error " ;
+                $message = "error " . $output ;
                 $error = true ;
             }else {
                 $time = $output['time'];
@@ -127,7 +131,8 @@ class ProblemController extends Controller
                     // $error  = true ;
                 }
                 if ($output != $testCase->output){
-                    $message = "wrong test in one case ";
+                    $message = "wrong test in one case expected " . $testCase->output . "--- get" .$output;
+
                     $error = true ;
                 }
             }
@@ -182,7 +187,7 @@ class ProblemController extends Controller
         }
     }
     public function filter(Request $request){
-        $problems = Problem::query()->with('tags')->where('active' , 1);
+        $problems = Problem::query()->with('tags');//->where('active' , 1);
         
         if ($request->diffculty != null){
             $problems->where('diffculty' , $request->diffculty);

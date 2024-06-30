@@ -17,7 +17,7 @@ class Problem extends Model
         'hint1', 'hint2', 'level', 'in_bank', 'solutions', 'administrator_id'
     ];
     protected $hidden = [
-        'teacher_code_solve'
+        'teacher_code_solve' ,
     ];
     public function teacher(): BelongsTo
     {

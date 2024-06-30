@@ -16,6 +16,7 @@ class CreateTrueFalseQuestionsTable extends Migration
             $table->string('choise3');
             $table->string('choise4');
             $table->integer('correct');
+            $table->string('code')->nullable();
             $table->timestamps();
         });
     }

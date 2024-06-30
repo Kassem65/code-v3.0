@@ -53,6 +53,7 @@ Route::group(['prefix' => 'adminstrator' , 'middleware' => ['auth:sanctum','admi
     Route::post('teachers/add', [TeacherController::class, 'addTeacher']);
     Route::delete('teacher/{teacher}', [TeacherController::class, 'deleteTeacher']);
     Route::post('change/{changeCategoryRequest}', [RequestController::class, 'accept']);
+    Route::delete('delete-request/{changeCategoryRequest}', [RequestController::class, 'delete']);
     Route::get('categories-with-subjects', [AdminstratorCategoryController::class, 'categoriesWithSubjects']);
     Route::get('exams', [AdminstratorExamController::class, 'index']);
     Route::get('exams/{exam}', [AdminstratorExamController::class, 'show']);
@@ -167,6 +168,7 @@ Route::group(['prefix' => 'student' , 'middleware' => ['auth:sanctum','student']
     });
     Route::group(['prefix' => 'assessment'] , function(){
         Route::get('/{category}' , [StudentAssessmentController::class , 'show']);
+        Route::get('show/{assessment}' , [StudentAssessmentController::class , 'showAssessment']);
         Route::post('solve/{assessment}' ,[StudentAssessmentController::class , 'solveAssessment']);
         Route::get('show-solve/{assessment}' , [StudentAssessmentController::class , 'showSolve']);
     });
@@ -189,6 +191,3 @@ Route::post('run' , function(Request $request){
     return CodeExecutorController::runCppCodeRemontly($param);
 });
 
-Route::get('test' , function (){
-    return CodeExecutorController::generateTestCases("5 INTEGER 10 100 INTEGER 10 100 EXIT ");
-});

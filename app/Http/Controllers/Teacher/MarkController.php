@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\CategoryStudent;
 use App\Models\ExamStudent;
 use App\Models\Student;
+use App\Models\StudentSubject;
 use Illuminate\Http\Request;
 
 class MarkController extends Controller
@@ -38,13 +39,15 @@ class MarkController extends Controller
             
             $studnet_assessments = $student->assessments->where('category_id' , $category->id);
             // return $studnet_assessments ;
-            $student['attendance_mark'] = round(($studnet_assessments->count() / $assessments->count() ) * $category->mark_of_commings) ;
+            $student['attendance_mark'] = 
+            ($assessments->count() != 0)?round(($studnet_assessments->count() / $assessments->count() ) * $category->mark_of_commings):0 ;
             $assessment_mark =  0 ;
             foreach($studnet_assessments as $assessment){
                 $assessment_mark+= $assessment->pivot->mark ;
             }
             
-            $student['assessment_mark'] = round(($assessment_mark / ($assessments->count()*100)) * $category->mark_of_ratings) ;
+            $student['assessment_mark'] =
+            ($assessments->count() != 0)? round(($assessment_mark / ($assessments->count()*100)) * $category->mark_of_ratings) :0;
             $exam_mark = ExamStudent::where('exam_id' , $exam->id)->where('student_id' , $student->id)->first();
             $student['exam_mark'] = round(($exam_mark != NULL)  ? $exam_mark->mark : 0) ;
             $student['total'] = $student['attendance_mark'] + $student['assessment_mark']  +$student['exam_mark']  ;

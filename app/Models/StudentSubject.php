@@ -10,6 +10,6 @@ class StudentSubject extends Model
     use HasFactory;
     protected $table = 'student_subject';
     protected $fillable = [
-        'student_id', 'subject_id'
+        'student_id', 'subject_id', 'final_mark'
     ];
 }

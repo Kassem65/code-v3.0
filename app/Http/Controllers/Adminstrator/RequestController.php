@@ -17,8 +17,16 @@ class RequestController extends Controller
         ->update([
             'category_id' => $changeCategoryRequest->new_category
         ]);
+        $changeCategoryRequest->delete();
         return response()->json([
             'message' => 'request accepted successfully.'
+        ]);
+    }
+    public function delete(ChangeCategoryRequest $changeCategoryRequest) {
+        
+        $changeCategoryRequest->delete();
+        return response()->json([
+            'message' => 'request deleted successfully.'
         ]);
     }
 }

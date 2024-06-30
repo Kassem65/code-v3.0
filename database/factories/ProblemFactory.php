@@ -72,7 +72,7 @@ class ProblemFactory extends Factory
     $rand = random_int(0,2);
         return [
             'name' => $problems[$rand]['name'],
-            'description' => $this->faker->paragraph,
+            'description' => $problems[$rand]['description'],
             'teacher_code_solve' => $problems[$rand]['code'],
             'teacher_id' => 1,
             'level' => $rand ,

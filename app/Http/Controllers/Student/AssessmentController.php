@@ -10,13 +10,20 @@ use Illuminate\Http\Request;
 
 class AssessmentController extends Controller
 {
-    
+    public function showAssessment(Assessment $assessment) {
+        if ($assessment->active || $assessment->problem->active)
+            return ProblemController::show($assessment->problem);
+        abort(403, 'this assessment is not active.');
+    }
     public function show(Category $category){
         $assessment = $category->assessment() ;
         $assessment->problem ;
         return $assessment ;  
     }
     public function solveAssessment(Assessment $assessment , Request $request){
+        if ($assessment->active == 0) {
+            abort(403, 'you cant access this problem');
+        }
         $student =  auth()->user()->student ;
         $solve = ProblemController::solveProlem($assessment->problem,$request );
         $assessment->students()->updateExistingPivot($student->id , ['mark' => $solve['percent'] ,'solve' => $request->code]);

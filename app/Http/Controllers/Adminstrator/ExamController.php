@@ -42,7 +42,7 @@ class ExamController extends Controller
 
         $exam = Exam::create([
             'passwd' => $request->exam_password,
-            'administrator_id' => auth()->id(),
+            'administrator_id' => auth()->user()->adminstrator->id,
             'name' => $request->exam_name,
             'time' => $request->exam_date,
             'subject_id' => $subject->id,
@@ -57,7 +57,8 @@ class ExamController extends Controller
                 'choise3' => $question['choise_3'],
                 'choise4' => $question['choise_4'],
                 'correct' => $question['correct'],
-                'exam_id' => $exam->id
+                'exam_id' => $exam->id,
+                'code' => $question['code']
             ]);
         }
         $students = $subject->students;
@@ -70,7 +71,6 @@ class ExamController extends Controller
         DB::commit();
         return response()->json([
             'success' => 'exam added successfully and students added success',
-            'exam' => $exam,
         ]);
         
         

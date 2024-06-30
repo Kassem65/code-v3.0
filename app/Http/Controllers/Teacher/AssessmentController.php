@@ -49,7 +49,9 @@ class AssessmentController extends Controller
         DB::beginTransaction();
         $assessment->active = 0 ; 
         $assessment->save();
-        $assessment->problem->active = 1;
+        $problem = $assessment->problem;
+        $problem->active = 1 ;
+        $problem->save();
         $category = $assessment->category ;
         foreach($request->students as $student){
             $cat_stu = CategoryStudent::where('student_id' , $student['id'])
@@ -68,8 +70,6 @@ class AssessmentController extends Controller
             $assessment->students()->updateExistingPivot($student['id'],[
                 'mark' => $student['mark'] 
             ]);
-            $cat_stu->number_of_assessment = $cat_stu->number_of_assessment + 1 ;
-            $cat_stu->attendance_marks ++;
             $cat_stu->save();
             
         }
