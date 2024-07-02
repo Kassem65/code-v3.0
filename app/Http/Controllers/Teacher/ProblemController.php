@@ -194,8 +194,10 @@ class ProblemController extends Controller
         $request->validate([
             'model' =>'required'
         ]);
+        $model = $request->model  ;
+        $model[0] = '1';
         $code = Storage::get('public/generateTestCasess2');
-        $sample = CodeExecutorController::runJavaRemontly(['code' => $code , 'input' => $request->model]);
+        $sample = CodeExecutorController::runJavaRemontly(['code' => $code , 'input' => $model]);
         return['sample' => $sample['output'] ];
     }
   

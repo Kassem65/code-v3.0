@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('student_id')->constrained('students')->cascadeOnDelete() ;
             $table->foreignId('assessment_id')->constrained('assessments')->cascadeOnDelete();
             $table->text('solve')->nullable();
-            $table->float('mark')->nullable();
+            $table->float('mark')->default(0);
             $table->timestamps();
         });
     }

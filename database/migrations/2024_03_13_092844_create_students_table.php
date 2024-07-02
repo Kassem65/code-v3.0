@@ -18,6 +18,7 @@ class CreateStudentsTable extends Migration
             $table->integer('easy')->default(0);
             $table->integer('medium')->default(0);
             $table->integer('hard')->default(0);
+            $table->mediumText('QRcode')->nullable();
             $table->integer('university_id')->unique();
             $table->timestamps();
         });

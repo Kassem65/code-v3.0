@@ -21,9 +21,6 @@ class ProblemResource extends JsonResource
             'tags' => $this->tags[0] ?? null,
             'diffculty' => $this->diffculty ,
             'level' => $this->level,
-            // 'test_case' => $this->testCase ,
-            // 'created_at' => $this->created_at->format('Y-m-d'),
-            // 'updated_at' => $this->updated_at->format('Y-m-d'),
             'solutions' => $this->solutions
         ];
     }

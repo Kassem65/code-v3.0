@@ -65,7 +65,9 @@ class StudentController extends Controller
         $rows = Excel::toCollection([] , $file)[0];
         DB::beginTransaction();
         foreach($rows as $row){
+
             if ($row[0] == 'number')continue ;
+            // SetOfStudent::where('number',)
             SetOfStudent::create([
                 'number' =>$row[0] ,
                 'name' =>  $row[1]

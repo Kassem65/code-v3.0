@@ -63,6 +63,7 @@ class ProfileController extends Controller
             });
             $student['solutions'] = $student->hard + $student->medium + $student->easy;
             $student['detail'] = $user;
+            $student['QRcode'] = base64_decode($student->QRcode);
         
         return $student;
     }

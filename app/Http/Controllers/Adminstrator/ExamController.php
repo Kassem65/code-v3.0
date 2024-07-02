@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Adminstrator;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ExamsSubjectsResource;
 use App\Http\Resources\ExamSubjectResource;
+use App\Http\Resources\ProblemResource;
 use App\Models\Exam;
 use App\Models\ExamStudent;
 use App\Models\Subject;
@@ -18,6 +19,7 @@ class ExamController extends Controller
         $exams = Exam::with('subject')->get();
         return ExamsSubjectsResource::collection($exams);
     }
+  
     public function show($id) {
         $exam = Exam::with('subject', 'problem1', 'trueFalseQuestions')->find($id);
         

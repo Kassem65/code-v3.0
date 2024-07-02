@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Ramsey\Uuid\Type\Integer;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class AuthController extends Controller
 {
@@ -65,7 +66,8 @@ class AuthController extends Controller
         ]);
 
         $token = $user->createToken('personal_access_token')->plainTextToken;
-        
+        $qrCode = QrCode::generate($request->university_id);
+        $request['QRcode'] =base64_encode($qrCode);
         $user->student()->create($request->all());
          
 

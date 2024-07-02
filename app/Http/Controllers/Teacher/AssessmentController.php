@@ -42,12 +42,12 @@ class AssessmentController extends Controller
         $request->validate([
             'students' => 'required|array'
         ]);
-        if ($assessment->active == 0  ){ 
+        if ($assessment->active == 0 ||$assessment->active == 2  ){ 
             return ['message' => 'this assessment is already stoped'];
         }
         $this->checkPermission($assessment) ;
         DB::beginTransaction();
-        $assessment->active = 0 ; 
+        $assessment->active = 2 ; 
         $assessment->save();
         $problem = $assessment->problem;
         $problem->active = 1 ;
@@ -83,6 +83,9 @@ class AssessmentController extends Controller
         ]);
         if ($assessment->active == 1){
             return ['message'=>'this assessment already active'];
+        }
+        if ($assessment->active == 2){
+            return ['message'=>'_this assessment was activeted in  ' .$assessment->updated_at ];
         }
         $assessment->active = 1 ;
         $category = $assessment->category ;

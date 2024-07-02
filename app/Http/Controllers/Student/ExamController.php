@@ -95,7 +95,8 @@ class ExamController extends Controller
         $examStudent->mark = $examMark ;
         $examStudent->save();
         return [
-            'message' => "your mark is $examMark , amd you can review your solve in any time "
+            'message' => "your mark is $examMark , amd you can review your solve in any time ",
+            'exam_mark' => $examMark
         ];
     }
     public function submit(Request $request, Exam $exam)

@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class AssessmentController extends Controller
 {
     public function showAssessment(Assessment $assessment) {
-        if ($assessment->active || $assessment->problem->active)
+        if ($assessment->active != 0)
             return ProblemController::show($assessment->problem);
         abort(403, 'this assessment is not active.');
     }
@@ -44,6 +44,6 @@ class AssessmentController extends Controller
         $student = auth()->user()->student;
         // return $student ;
         $solve = $assessment->students()->where('student_id' , $student->id)->first()->pivot->solve ;
-        return $solve ;
+        return ['solve'=>$solve] ;
     }
 }

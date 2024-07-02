@@ -26,6 +26,7 @@ use App\Http\Controllers\Student\TagController as StudentTagController;
 use App\Http\Controllers\Teacher\AuthController as TeacherAuthController;
 use App\Http\Controllers\Teacher\SubjectController;
 use App\Models\Problem;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,7 +48,7 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
 Route::post('student/register', [StudentAuthController::class, 'register']);
-
+// Route::get('tags' , [TagController::class , 'tags']);
 Route::group(['prefix' => 'adminstrator' , 'middleware' => ['auth:sanctum','adminstrator']] , function(){
     Route::get('teachers', [TeacherController::class, 'index']);
     Route::post('teachers/add', [TeacherController::class, 'addTeacher']);
@@ -66,8 +67,10 @@ Route::group(['prefix' => 'adminstrator' , 'middleware' => ['auth:sanctum','admi
     Route::group(['prefix' => 'students'] , function(){
         Route::post('distribute' , [AdminStudentController::class , 'distributeCategories']);
     });
+    Route::get('tags' , [TagController::class , 'tags']);//postman
 
-    Route::get('bank-problems', [ProblemController::class, 'showAdminBank']);
+
+    Route::get('bank-problems', [ProblemController::class, 'showAdminBank']);//postwomen
     Route::post('problems/add-problem' , [ProblemController::class, 'storeAdmin']);
 });
 Route::group(['prefix' => 'teacher' , 'middleware' => ['auth:sanctum','teacher']] , function(){
@@ -167,10 +170,11 @@ Route::group(['prefix' => 'student' , 'middleware' => ['auth:sanctum','student']
         Route::get('/{category}' , [StudentCategoryController::class , 'show']);
     });
     Route::group(['prefix' => 'assessment'] , function(){
+        Route::get('show-solve/{assessment}' , [StudentAssessmentController::class , 'showSolve']);
         Route::get('/{category}' , [StudentAssessmentController::class , 'show']);
         Route::get('show/{assessment}' , [StudentAssessmentController::class , 'showAssessment']);
         Route::post('solve/{assessment}' ,[StudentAssessmentController::class , 'solveAssessment']);
-        Route::get('show-solve/{assessment}' , [StudentAssessmentController::class , 'showSolve']);
+        
     });
     Route::group(['prefix' => 'exams'] , function(){
         Route::get('/', [StudentExamController::class, 'index']);
@@ -183,11 +187,16 @@ Route::group(['prefix' => 'student' , 'middleware' => ['auth:sanctum','student']
 });
 
 
-Route::post('test' , [ExcelImportController::class , 'test']) ;
-Route::get('testf' , [ExcelImportController::class , 'test']);
+Route::post('test' , [ProblemController::class , 'showSample']) ;
+Route::get('testf' ,function(){
+    $Student = Student::find(11) ;
+    $Student['QRcode'] = base64_decode( (base64_decode(Student::find(11)->QRcode))) ;
+    return $Student;
+});
 Route::post('run' , function(Request $request){
     $param['input'] = $request->input ;
     $param['code'] = $request->code ;
     return CodeExecutorController::runCppCodeRemontly($param);
 });
+
 
